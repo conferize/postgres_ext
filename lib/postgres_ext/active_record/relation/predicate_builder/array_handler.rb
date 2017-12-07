@@ -13,8 +13,8 @@ module ActiveRecord
           column = case attribute.try(:relation)
                    when Arel::Nodes::TableAlias, NilClass
                    else
-                     cache = attribute.relation.engine.connection.schema_cache
-                     if cache.table_exists? attribute.relation.name
+                     cache = ActiveRecord::Base.connection.schema_cache
+                     if cache.data_source_exists? attribute.relation.name
                        cache.columns(attribute.relation.name).detect{ |col| col.name.to_s == attribute.name.to_s }
                      end
                    end
